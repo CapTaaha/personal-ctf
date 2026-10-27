@@ -2,7 +2,27 @@
 
 A collection of small Python utilities for authorized security labs and CTF
 practice. Each tool is a standalone script; the collection currently includes a
-hash-format identifier and a local reconnaissance report tool.
+hash-format identifier, a local reconnaissance report tool, and a log anomaly
+analyzer.
+
+## Log anomaly analyzer
+
+`log_analyzer.py` reads local web access and authentication logs and reports
+simple, explainable indicators for defensive triage. It recognizes Apache/Nginx
+combined access log lines and common SSH/PAM authentication-failure messages.
+Rules flag repeated authentication failures, known scanning user-agent markers,
+bursts of HTTP 404 responses, and requests for multiple sensitive paths.
+
+```powershell
+python log_analyzer.py --log access.log --log auth.log
+python log_analyzer.py --log access.log --format json --output report.json
+```
+
+By default, five failed authentication events or ten HTTP 404 responses from an
+IP are flagged. Adjust these thresholds with `--auth-threshold` and
+`--scan-threshold`. The analyzer only reads the specified files; it performs no
+network requests. Its pattern-based results are triage hints, not proof of
+malicious activity, and unrecognized log formats are ignored.
 
 ## Hash format identifier
 
