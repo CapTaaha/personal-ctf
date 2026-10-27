@@ -3,7 +3,34 @@
 A collection of small Python utilities for authorized security labs and CTF
 practice. Each tool is a standalone script; the collection currently includes a
 hash-format identifier, a local reconnaissance report tool, and a log anomaly
-analyzer.
+analyzer. `toolkit.py` brings common encoding, cipher, steganography, source
+review, hash identification, and log analysis utilities together in an
+interactive menu.
+
+## Interactive toolkit
+
+Start the menu with:
+
+```powershell
+python toolkit.py
+```
+
+The menu provides Base64, hexadecimal, and ROT13 conversion; Caesar and
+Vigenere ciphers (including all Caesar shifts); hash-format identification; and
+the existing local log analyzer. These educational encodings and ciphers are
+not suitable for protecting sensitive data.
+
+The LSB extractor supports uncompressed 24-bit and 32-bit Windows BMP images.
+It reads the least-significant bit of each RGB color channel in visual
+top-to-bottom order, assembles bytes most-significant-bit first, and stops at
+the first NUL byte. It does not decode other image formats or attempt to detect
+whether an image contains a payload.
+
+The source scanner reads recognized source files from a local file or directory
+and flags simple patterns such as `eval(...)`, `os.system(...)`, and
+`shell=True`. It performs no code execution or network requests. Results are
+pattern matches for defensive triage, not proof of a vulnerability; comments
+and strings can also match.
 
 ## Log anomaly analyzer
 
