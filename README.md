@@ -1,31 +1,46 @@
-# Local Recon CLI
+# CTF Tools
 
-A small Python CLI for turning authorized reconnaissance output into a readable,
-defensive triage report. It parses Nmap XML and Gobuster text, and can optionally
-run a limited Nmap service scan against **localhost only**.
+A collection of small Python utilities for authorized security labs and CTF
+practice. Each tool is a standalone script; the collection currently includes a
+hash-format identifier and a local reconnaissance report tool.
 
-> **Safety boundary:** active scans are restricted to loopback addresses. The tool
-> is intended for your own machine and local labs, not remote hosts. Only scan
-> systems and data you are authorized to assess.
+## Hash format identifier
 
-## What it does
+Suggests likely formats for common hexadecimal digests and identifies several
+well-known encoded hash prefixes:
 
-- Parses one or more Nmap XML files and Gobuster text files.
-- Summarizes open services and discovered web paths in the terminal or JSON.
-- Adds a small number of rule-based defensive review notes, such as reachable
-  SMB or an SSH banner that may indicate an older OpenSSH release.
-- Optionally runs Nmap against `127.0.0.1`; scanning is never implicit.
+```powershell
+python hash_identifier.py "d41d8cd98f00b204e9800998ecf8427e"
+```
 
-This is a triage helper, **not** a vulnerability scanner. Banner-based hints can
-be incomplete or inaccurate; verify findings against the software vendor and
-your configuration. It does not attempt exploitation or run Gobuster.
+The output lists possibilities, not a definitive identification: different
+algorithms can share lengths, and salts or encodings can make identification
+ambiguous. This tool only identifies likely formats; it does not decode or crack
+hashes.
+
+## Local reconnaissance report
+
+The `recon_cli.py` tool parses Nmap XML and Gobuster text into a readable,
+defensive triage report. It can optionally run a limited Nmap service scan against
+**localhost only**.
+
+> **Safety boundary:** active scans are restricted to loopback addresses. The
+> tool is intended for your own machine and local labs, not remote hosts. Only
+> scan systems and data you are authorized to assess.
+
+It summarizes open services and discovered web paths, and adds rule-based
+defensive review notes, such as reachable SMB or an SSH banner that may indicate
+an older OpenSSH release. It is a triage helper, **not** a vulnerability scanner.
+Banner-based hints can be incomplete or inaccurate; verify findings against the
+software vendor and your configuration. It does not attempt exploitation or run
+Gobuster.
 
 ## Requirements
 
 - Python 3.10 or newer
 - Nmap 7.80 or newer for active scans only
 
-On Windows, install Nmap with:
+On Windows, install Nmap if you want to use active local scans:
 
 ```powershell
 winget install --id Insecure.Nmap --exact
